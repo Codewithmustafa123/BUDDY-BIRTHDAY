@@ -286,6 +286,69 @@
             font-weight: 300;
         }
 
+        /* --- Send Love Button --- */
+        .btn-hearts {
+            background: linear-gradient(135deg, #f43f5e 0%, #a855f7 100%);
+            color: #fff;
+            border: none;
+            padding: 14px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            font-family: inherit;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 35px;
+            z-index: 25;
+            box-shadow: 0 10px 25px rgba(244, 63, 94, 0.45);
+            transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.3s ease, background 0.3s ease;
+            letter-spacing: 0.5px;
+            position: relative;
+        }
+
+        .btn-hearts:hover:not(:disabled) {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(244, 63, 94, 0.7);
+        }
+
+        .btn-hearts:active:not(:disabled) {
+            transform: scale(0.94);
+        }
+
+        .btn-hearts:disabled {
+            background: linear-gradient(135deg, #a855f7 0%, #f43f5e 100%);
+            box-shadow: 0 0 40px rgba(244, 63, 94, 0.9);
+            cursor: not-allowed;
+            animation: pulseGlow 1s infinite;
+        }
+
+        .btn-hearts.bump {
+            animation: bump 0.25s ease;
+        }
+
+        @keyframes bump {
+            0% { transform: scale(1); }
+            40% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 30px rgba(244, 63, 94, 0.7); }
+            50% { box-shadow: 0 0 55px rgba(244, 63, 94, 1); }
+        }
+
+        /* Falling rose / heart */
+        .falling-heart {
+            position: fixed;
+            top: -60px;
+            left: 0;
+            pointer-events: none;
+            z-index: 200;
+            user-select: none;
+            line-height: 1;
+            filter: drop-shadow(0 4px 8px rgba(244, 63, 94, 0.4));
+            will-change: transform;
+        }
+
         /* --- Confetti --- */
         .confetti {
             position: absolute;
@@ -307,69 +370,21 @@
 
         /* ============ MOBILE RESPONSIVE ============ */
         @media (max-width: 768px) {
-            .msg-text {
-                font-size: 1.6rem;
-                max-width: 90%;
-                min-height: 100px;
-                line-height: 1.5;
-                padding: 0 10px;
-            }
-
-            .cursor {
-                height: 1.6rem;
-                width: 2px;
-            }
-
-            .btn-start {
-                padding: 13px 32px;
-                font-size: 1.05rem;
-                margin-top: 25px;
-            }
-
-            .btn-continue {
-                padding: 11px 28px;
-                font-size: 1rem;
-                margin-top: 30px;
-            }
-
-            .blaster-emoji {
-                font-size: 6rem;
-            }
-
-            .instruction {
-                font-size: 1rem;
-                letter-spacing: 1px;
-                padding: 0 20px;
-                text-align: center;
-                margin-top: 20px;
-            }
-
-            .pressure-bar {
-                width: 200px;
-                margin-top: 18px;
-            }
-
-            .greeting-card {
-                width: 90%;
-                padding: 45px 25px;
-                border-radius: 20px;
-            }
-
-            h1 {
-                font-size: 2rem;
-                margin-bottom: 15px;
-            }
-
-            p.message {
-                font-size: 1rem;
-                line-height: 1.6;
-            }
-
+            .msg-text { font-size: 1.6rem; max-width: 90%; min-height: 100px; line-height: 1.5; padding: 0 10px; }
+            .cursor { height: 1.6rem; width: 2px; }
+            .btn-start { padding: 13px 32px; font-size: 1.05rem; margin-top: 25px; }
+            .btn-continue { padding: 11px 28px; font-size: 1rem; margin-top: 30px; }
+            .blaster-emoji { font-size: 6rem; }
+            .instruction { font-size: 1rem; letter-spacing: 1px; padding: 0 20px; text-align: center; margin-top: 20px; }
+            .pressure-bar { width: 200px; margin-top: 18px; }
+            .greeting-card { width: 90%; padding: 45px 25px; border-radius: 20px; }
+            h1 { font-size: 2rem; margin-bottom: 15px; }
+            p.message { font-size: 1rem; line-height: 1.6; }
+            .btn-hearts { padding: 12px 32px; font-size: 1rem; margin-top: 28px; }
             .orb-1 { width: 200px; height: 200px; }
             .orb-2 { width: 250px; height: 250px; }
         }
 
-        /* Extra chhote phones ke liye */
         @media (max-width: 400px) {
             .msg-text { font-size: 1.3rem; min-height: 90px; }
             .cursor { height: 1.3rem; }
@@ -378,6 +393,7 @@
             p.message { font-size: 0.95rem; }
             .greeting-card { padding: 35px 20px; }
             .pressure-bar { width: 170px; }
+            .btn-hearts { padding: 11px 26px; font-size: 0.95rem; }
         }
     </style>
 </head>
@@ -429,6 +445,7 @@
                 <p class="message">Wishing you the happiest of birthdays! Eat lots of cake, smile big, and have the best day ever. You deserve it! 🎂🎈</p>
             </div>
         </div>
+        <button class="btn-hearts" id="btn-hearts" onclick="startHearts()">💖 Send Love 💖</button>
     </div>
 
     <script>
@@ -439,7 +456,6 @@
         
         const audio = document.getElementById('bg-audio');
 
-        // Simple and sweet dynamic typing messages
         const messages = {
             1: `Hey ${userName}, guess what?`,
             2: "Today is your special day!",
@@ -450,20 +466,13 @@
             initializeAmbientBalloons();
         });
 
-        // STEP 0: Start Experience
         function startExperience() {
-            // Inject the personalized name into the final card
             document.getElementById('final-name').innerText = `Happy Birthday, ${userName}!`;
-
-            // Start audio
             try { 
                 audio.volume = 0.6; 
                 audio.play().catch(() => {}); 
-            } catch (err) { 
-                console.error("Audio playback failed", err); 
-            }
+            } catch (err) { console.error("Audio playback failed", err); }
             
-            // Move to Step 1
             document.getElementById('step-0').classList.remove('active');
             setTimeout(() => {
                 document.getElementById('step-0').style.display = 'none';
@@ -472,7 +481,6 @@
             }, 800);
         }
 
-        // Typewriter Engine
         function typeText(elementId, text, buttonId) {
             const el = document.getElementById(elementId);
             el.innerHTML = '';
@@ -493,23 +501,20 @@
             setTimeout(type, 300); 
         }
 
-        // Standard Step Navigation
         function nextStep(current) {
             document.getElementById(`step-${current}`).classList.remove('active');
-            
             setTimeout(() => {
                 const next = current + 1;
                 const nextEl = document.getElementById(`step-${next}`);
                 if (!nextEl) return;
                 nextEl.classList.add('active');
-                
                 if (messages[next]) {
                     typeText(`type-${next}`, messages[next], `btn-${next}`);
                 }
             }, 800);
         }
 
-        // Blaster Interaction Logic
+        // Blaster
         const blaster = document.getElementById('blaster');
         const blasterIcon = document.getElementById('blaster-icon');
         const pressureFill = document.getElementById('pressure');
@@ -518,11 +523,8 @@
 
         blaster.addEventListener('click', () => {
             if (taps >= requiredTaps) return;
-            
             taps++;
-            const progress = (taps / requiredTaps) * 100;
-            pressureFill.style.width = `${progress}%`;
-            
+            pressureFill.style.width = `${(taps / requiredTaps) * 100}%`;
             blasterIcon.style.transform = `scale(${1 + (taps * 0.2)})`;
             blaster.classList.remove('shake');
             void blaster.offsetWidth;
@@ -531,7 +533,6 @@
             if (taps === requiredTaps) {
                 blasterIcon.style.transform = 'scale(0) rotate(180deg)';
                 blasterIcon.style.opacity = '0';
-                
                 setTimeout(() => {
                     document.getElementById('step-4').classList.remove('active');
                     setTimeout(() => {
@@ -542,7 +543,7 @@
             }
         });
 
-        // 3D Tilt Effect
+        // 3D Tilt
         const card = document.getElementById('tilt-card');
         document.addEventListener('mousemove', (e) => {
             if (!document.getElementById('step-5').classList.contains('active')) return;
@@ -551,13 +552,85 @@
             card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
         });
 
-        // Final Climax triggers
         function triggerFinalReveal() {
             triggerPartyConfetti();
             triggerClimaxBalloons();
         }
 
-        // --- Confetti & Balloon Engine ---
+        // ==========================================
+        // 💖 CLICK TO SPEED UP — rose hearts
+        // ==========================================
+        let speedLevel = 0;
+        let heartLoopRunning = false;
+        const MAX_LEVEL = 12;
+        const symbols = ['🌹', '❤️', '💖', '🌹', '💕', '❤️'];
+
+        // Speed curve: level 1 = slow, level 12 = very fast
+        function getSpawnInterval(level) {
+            // 1 → 380ms, 12 → ~40ms
+            return Math.max(380 / Math.pow(level, 1.35), 40);
+        }
+
+        function getFallDuration(level) {
+            // 1 → 4500ms, 12 → ~900ms
+            return Math.max(4500 / Math.pow(level, 0.9), 900);
+        }
+
+        function startHearts() {
+            if (speedLevel >= MAX_LEVEL) return;
+            speedLevel++;
+
+            const btn = document.getElementById('btn-hearts');
+
+            // Small bump animation on every click
+            btn.classList.remove('bump');
+            void btn.offsetWidth;
+            btn.classList.add('bump');
+
+            if (speedLevel >= MAX_LEVEL) {
+                btn.textContent = '💖 MAX LOVE 💖';
+                btn.disabled = true;
+            } else {
+                btn.textContent = `💖 Send Love (Speed ${speedLevel}) 💖`;
+            }
+
+            if (!heartLoopRunning) {
+                heartLoopRunning = true;
+                heartLoop();
+            }
+        }
+
+        function heartLoop() {
+            spawnHeart();
+            const interval = getSpawnInterval(speedLevel);
+            setTimeout(heartLoop, interval);
+        }
+
+        function spawnHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('falling-heart');
+            heart.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+            heart.style.left = `${Math.random() * 100}vw`;
+            heart.style.fontSize = `${Math.random() * 18 + 26}px`;
+            document.body.appendChild(heart);
+
+            const fallDuration = getFallDuration(speedLevel);
+            const drift = (Math.random() - 0.5) * 180;
+            const rotation = Math.random() * 720 - 360;
+
+            const animation = heart.animate([
+                { transform: 'translate(0px, 0px) rotate(0deg)', opacity: 1 },
+                { transform: `translate(${drift}px, 105vh) rotate(${rotation}deg)`, opacity: 0.85 }
+            ], {
+                duration: fallDuration,
+                easing: 'linear',
+                fill: 'forwards'
+            });
+
+            animation.onfinish = () => heart.remove();
+        }
+
+        // --- Balloons & Confetti ---
         const ambientContainer = document.getElementById('ambient-container');
         const confettiColors = ['#f43f5e', '#8b5cf6', '#3b82f6', '#10b981', '#ffffff'];
 
@@ -571,27 +644,19 @@
         function createBalloon(isClimax = false) {
             const balloon = document.createElement('div');
             balloon.classList.add('balloon');
-            
             const colors = ['var(--balloon-color-1)', 'var(--balloon-color-2)', 'var(--balloon-color-3)'];
             balloon.style.background = colors[Math.floor(Math.random() * colors.length)];
             balloon.style.left = `${Math.random() * 100}vw`;
-            
             const sizeMult = isClimax ? (Math.random() * 1 + 1.2) : (Math.random() * 0.5 + 0.8);
             balloon.style.transform = `scale(${sizeMult})`;
             balloon.style.opacity = isClimax ? '0.8' : '0.5';
-
             ambientContainer.appendChild(balloon);
-
             const duration = isClimax ? (Math.random() * 3 + 3) : (Math.random() * 8 + 10);
-
             balloon.animate([
                 { transform: `scale(${sizeMult}) translateY(0) rotate(0deg)` },
                 { transform: `scale(${sizeMult}) translateY(-120vh) rotate(${Math.random() * 360}deg)` }
-            ], {
-                duration: duration * 1000,
-                easing: 'linear',
-                fill: 'forwards'
-            }).onfinish = () => balloon.remove();
+            ], { duration: duration * 1000, easing: 'linear', fill: 'forwards' })
+            .onfinish = () => balloon.remove();
         }
 
         function triggerClimaxBalloons() {
@@ -611,7 +676,6 @@
             for (let i = 0; i < numParticles; i++) {
                 const confetti = document.createElement('div');
                 confetti.classList.add('confetti');
-                
                 const size = Math.random() * 12 + 6;
                 confetti.style.width = `${size}px`;
                 confetti.style.height = `${size * (Math.random() > 0.5 ? 1 : 2.5)}px`; 
@@ -619,25 +683,16 @@
                 confetti.style.borderRadius = Math.random() > 0.4 ? '50%' : '2px';
                 confetti.style.left = `${startX}px`;
                 confetti.style.top = `${startY}px`;
-                
                 document.body.appendChild(confetti);
-
                 const angle = (Math.random() * 50 + 40) * (Math.PI / 180); 
                 const velocity = Math.random() * 1800 + 1000;
-                
                 const endX = startX + (Math.cos(angle) * velocity * direction);
                 const endY = startY - (Math.sin(angle) * velocity) + 600; 
                 const rotation = Math.random() * 1080 - 540;
-
                 const animation = confetti.animate([
                     { transform: 'translate(0, 0) rotate(0deg)', opacity: 1 },
                     { transform: `translate(${endX - startX}px, ${endY - startY}px) rotate(${rotation}deg)`, opacity: 0 }
-                ], {
-                    duration: Math.random() * 2000 + 2000,
-                    easing: 'cubic-bezier(0.25, 1, 0.4, 1)', 
-                    fill: 'forwards'
-                });
-
+                ], { duration: Math.random() * 2000 + 2000, easing: 'cubic-bezier(0.25, 1, 0.4, 1)', fill: 'forwards' });
                 animation.onfinish = () => confetti.remove();
             }
         }
@@ -645,25 +700,17 @@
         function dropTopConfetti() {
             const confetti = document.createElement('div');
             confetti.classList.add('confetti');
-            
             const size = Math.random() * 10 + 5;
             confetti.style.width = `${size}px`;
             confetti.style.height = `${size}px`;
             confetti.style.background = confettiColors[Math.floor(Math.random() * confettiColors.length)];
             confetti.style.left = `${Math.random() * 100}vw`;
             confetti.style.top = `-20px`;
-            
             document.body.appendChild(confetti);
-
             const animation = confetti.animate([
                 { transform: 'translateY(0) rotate(0deg)' },
                 { transform: `translateY(110vh) rotate(${Math.random() * 720}deg)` }
-            ], {
-                duration: Math.random() * 4000 + 3000,
-                easing: 'linear',
-                fill: 'forwards'
-            });
-
+            ], { duration: Math.random() * 4000 + 3000, easing: 'linear', fill: 'forwards' });
             animation.onfinish = () => confetti.remove();
         }
     </script>
