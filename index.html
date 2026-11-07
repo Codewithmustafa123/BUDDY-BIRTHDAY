@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Happy Birthday!</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
@@ -30,12 +30,14 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             height: 100vh;
+            height: 100dvh;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
             perspective: 1500px;
             user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         /* --- Ambient Background --- */
@@ -45,6 +47,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
+            height: 100dvh;
             overflow: hidden;
             z-index: 0;
             pointer-events: none;
@@ -94,6 +97,7 @@
             transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
             transform: translateY(30px) scale(0.95);
             z-index: 10;
+            padding: 20px;
         }
 
         .step.active {
@@ -120,6 +124,7 @@
             padding: 15px 40px;
             font-size: 1.2rem;
             font-weight: 600;
+            font-family: inherit;
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -128,7 +133,8 @@
             margin-top: 30px;
         }
 
-        .btn-start:hover {
+        .btn-start:hover,
+        .btn-start:active {
             background: var(--accent);
             color: var(--bg-color);
             box-shadow: 0 0 30px var(--accent-glow);
@@ -145,6 +151,7 @@
             border-radius: 30px;
             cursor: pointer;
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             margin-top: 40px;
             opacity: 0;
             transform: translateY(20px);
@@ -156,7 +163,8 @@
             transform: translateY(0);
         }
 
-        .btn-continue:hover {
+        .btn-continue:hover,
+        .btn-continue:active {
             background: var(--accent);
             border-color: var(--accent);
             box-shadow: 0 0 20px var(--accent-glow);
@@ -171,6 +179,10 @@
             min-height: 120px;
             text-shadow: 0 4px 15px rgba(0,0,0,0.8);
             z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .cursor {
@@ -180,6 +192,7 @@
             background-color: var(--accent);
             vertical-align: middle;
             animation: blink 0.8s infinite;
+            margin-left: 4px;
         }
 
         /* --- The Party Popper --- */
@@ -187,6 +200,7 @@
             cursor: pointer;
             text-align: center;
             z-index: 20;
+            padding: 20px;
         }
 
         .blaster-emoji {
@@ -205,6 +219,7 @@
 
         .pressure-bar {
             width: 250px;
+            max-width: 100%;
             height: 12px;
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
@@ -226,6 +241,9 @@
             perspective: 1500px;
             transform-style: preserve-3d;
             z-index: 20;
+            width: 100%;
+            display: flex;
+            justify-content: center;
         }
 
         .greeting-card {
@@ -255,6 +273,7 @@
             margin-bottom: 20px;
             background: linear-gradient(to right, #f8fafc, #f43f5e, #8b5cf6, #f8fafc);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             background-size: 300% auto;
             animation: gradient-shift 4s linear infinite;
@@ -284,6 +303,81 @@
             20%, 80% { transform: translate3d(4px, 0, 0) rotate(2deg); }
             30%, 50%, 70% { transform: translate3d(-8px, 0, 0) rotate(-5deg); }
             40%, 60% { transform: translate3d(8px, 0, 0) rotate(5deg); }
+        }
+
+        /* ============ MOBILE RESPONSIVE ============ */
+        @media (max-width: 768px) {
+            .msg-text {
+                font-size: 1.6rem;
+                max-width: 90%;
+                min-height: 100px;
+                line-height: 1.5;
+                padding: 0 10px;
+            }
+
+            .cursor {
+                height: 1.6rem;
+                width: 2px;
+            }
+
+            .btn-start {
+                padding: 13px 32px;
+                font-size: 1.05rem;
+                margin-top: 25px;
+            }
+
+            .btn-continue {
+                padding: 11px 28px;
+                font-size: 1rem;
+                margin-top: 30px;
+            }
+
+            .blaster-emoji {
+                font-size: 6rem;
+            }
+
+            .instruction {
+                font-size: 1rem;
+                letter-spacing: 1px;
+                padding: 0 20px;
+                text-align: center;
+                margin-top: 20px;
+            }
+
+            .pressure-bar {
+                width: 200px;
+                margin-top: 18px;
+            }
+
+            .greeting-card {
+                width: 90%;
+                padding: 45px 25px;
+                border-radius: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 15px;
+            }
+
+            p.message {
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+
+            .orb-1 { width: 200px; height: 200px; }
+            .orb-2 { width: 250px; height: 250px; }
+        }
+
+        /* Extra chhote phones ke liye */
+        @media (max-width: 400px) {
+            .msg-text { font-size: 1.3rem; min-height: 90px; }
+            .cursor { height: 1.3rem; }
+            .blaster-emoji { font-size: 5rem; }
+            h1 { font-size: 1.7rem; }
+            p.message { font-size: 0.95rem; }
+            .greeting-card { padding: 35px 20px; }
+            .pressure-bar { width: 170px; }
         }
     </style>
 </head>
@@ -364,7 +458,7 @@
             // Start audio
             try { 
                 audio.volume = 0.6; 
-                audio.play(); 
+                audio.play().catch(() => {}); 
             } catch (err) { 
                 console.error("Audio playback failed", err); 
             }
